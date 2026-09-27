@@ -5,11 +5,21 @@
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <layouts/foostan/corne/5column.dtsi>
+#include <layouts/foostan/corne/6column.dtsi>
+
+&foostan_corne_6col_layout {
+    transform = <&default_transform>;
+};
+
+&foostan_corne_5col_layout {
+    transform = <&five_column_transform>;
+};
 
 / {
 	chosen {
 		zmk,kscan = &kscan0;
-		zmk,matrix_transform = &five_column_transform;
+		zmk,physical-layout = &foostan_corne_6col_layout;
 	};
 
 	default_transform: keymap_transform_0 {
@@ -57,36 +67,7 @@ RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)  RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10
 			;
 		
 	};
-
-	// TODO: per-key RGB node(s)?
 };
-
-	
-//	&i2c0 {
-//	
-// 	status = "okay";
-//	
-//    compatible = "nordic,nrf-twi";
-//    sda-pin = <4>;
-//    scl-pin = <5>;
-//   
-//
-//	oled: ssd1306@3c {
-//		compatible = "solomon,ssd1306fb";
-//		reg = <0x3c>;
-//		label = "DISPLAY";
-//		width = <128>;
-//		height = <32>;
-//		segment-offset = <0>;
-//		page-offset = <0>;
-//		display-offset = <0>;
-//		multiplex-ratio = <31>;
-//		segment-remap;
-//		com-invdir;
-//		com-sequential;
-//		prechargep = <0x22>;
-//	};
-//};
 
 &pinctrl {
        i2c0_default: i2c0_default {
@@ -113,7 +94,7 @@ display_i2c: &i2c0 {
  };
  
 &display_i2c {
- 	status = "okay";
+ 	status = "disabled";
 	oled: ssd1306@3c {
 		compatible = "solomon,ssd1306fb";
 		reg = <0x3c>;
@@ -129,10 +110,4 @@ display_i2c: &i2c0 {
 		com-sequential;
 		prechargep = <0x22>;
 	};
-};
-
-/ {
-  chosen {
-    zephyr,display = &oled;
-  };
 };
