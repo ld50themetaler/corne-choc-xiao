@@ -20,6 +20,7 @@
 	chosen {
 		zmk,kscan = &kscan0;
 		zmk,physical-layout = &foostan_corne_6col_layout;
+		zephyr,display = &oled;
 	};
 
 	default_transform: keymap_transform_0 {
@@ -94,7 +95,7 @@ display_i2c: &i2c0 {
  };
  
 &display_i2c {
- 	status = "disabled";
+ 	status = "okay";
 	oled: ssd1306@3c {
 		compatible = "solomon,ssd1306fb";
 		reg = <0x3c>;
