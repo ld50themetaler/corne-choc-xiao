@@ -1,0 +1,11 @@
+# ZMK Build Matrix
+include:
+  - board: xiao_ble//zmk
+    shield: chippy_left
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: chippy_left_xiao_ble
+
+  - board: xiao_ble//zmk
+    shield: chippy_right
+    artifact-name: chippy_right_xiao_ble

@@ -1,0 +1,10 @@
+file_format: "1"
+id: chippy
+name: Chippy
+type: shield
+features:
+  - keys
+  - studio
+siblings:
+  - chippy_left
+  - chippy_right
