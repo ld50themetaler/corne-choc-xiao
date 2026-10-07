@@ -24,7 +24,7 @@ docker run --rm \
     echo "=== Building chippy_left for xiao_ble//zmk with Studio, NVS Storage, and Prospector Module ==="
     west build -p -s app -d /workspace/build/left -b xiao_ble//zmk -S studio-rpc-usb-uart -- \
       -DZMK_CONFIG=/workspace/config \
-      -DSHIELD=chippy_left -DCONFIG_ZMK_STUDIO=y -DZMK_EXTRA_MODULES=/workspace/modules/prospector-zmk-module
+      -DSHIELD=chippy_left -DCONFIG_ZMK_STUDIO=y -DZMK_EXTRA_MODULES="/workspace/modules/prospector-zmk-module;/workspace/modules/zmk-feature-cdc-acm-bootloader-trigger"
 
     cp /workspace/build/left/zephyr/zmk.uf2 /workspace/out/chippy_left_xiao_ble.uf2
     echo "=== Left side build finished successfully ==="

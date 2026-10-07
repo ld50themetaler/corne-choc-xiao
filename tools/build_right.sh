@@ -24,7 +24,7 @@ docker run --rm \
     echo "=== Building chippy_right for xiao_ble//zmk with NVS Storage ==="
     west build -p -s app -d /workspace/build/right -b xiao_ble//zmk -- \
       -DZMK_CONFIG=/workspace/config \
-      -DSHIELD=chippy_right
+      -DSHIELD=chippy_right -DZMK_EXTRA_MODULES="/workspace/modules/zmk-feature-cdc-acm-bootloader-trigger"
 
     cp /workspace/build/right/zephyr/zmk.uf2 /workspace/out/chippy_right_xiao_ble.uf2
     echo "=== Right side build finished successfully ==="

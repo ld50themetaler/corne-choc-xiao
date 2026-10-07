@@ -23,6 +23,10 @@
 		zephyr,display = &oled;
 	};
 
+	bootloader_trigger: bootloader_trigger {
+		compatible = "zmk,cdc-acm-bootloader-trigger";
+	};
+
 	default_transform: keymap_transform_0 {
 		compatible = "zmk,matrix-transform";
 		columns = <12>;

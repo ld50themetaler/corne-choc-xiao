@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: prospector
       url-base: https://github.com/t-ogura
+    - name: sekigon-gonnoc
+      url-base: https://github.com/sekigon-gonnoc
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -13,5 +15,9 @@ manifest:
       remote: prospector
       revision: v2.2b
       path: modules/prospector-zmk-module
+    - name: zmk-feature-cdc-acm-bootloader-trigger
+      remote: sekigon-gonnoc
+      revision: main
+      path: modules/zmk-feature-cdc-acm-bootloader-trigger
   self:
     path: config
