@@ -1,23 +1,41 @@
-# Copy new UF2 from WSL
-wsl bash -c "cp /home/ld50/zmk_build/artifacts/chippy_left_xiao_ble.uf2 /mnt/c/Antigravity/Corne_Xiao_Choc/chippy_left_xiao_ble.uf2"
-Write-Host "Copied UF2. Checking size: $(Get-Item C:\Antigravity\Corne_Xiao_Choc\chippy_left_xiao_ble.uf2 | Select-Object -ExpandProperty Length)"
+param(
+    [string]$ComPort = ""
+)
 
-# Try sending bootloader commands
-Write-Host "Sending 'bootloader' command to COM3..."
-try {
-    $p = New-Object System.IO.Ports.SerialPort "COM3", 115200
-    $p.DtrEnable = $true
-    $p.RtsEnable = $true
-    $p.Open()
-    $p.WriteLine("bootloader")
-    Start-Sleep -Milliseconds 300
-    $p.Close()
-    Write-Host "Command sent."
-} catch {
-    Write-Host "COM3 error: $($_.Exception.Message)"
+$targetUf2 = "C:\Antigravity\Corne_Xiao_Choc\chippy_left_xiao_ble.uf2"
+if (!(Test-Path $targetUf2)) {
+    Write-Host "Target UF2 not found: $targetUf2"
+    exit 1
 }
 
-Write-Host "Waiting for UF2 bootloader drive (D:\)..."
+# If COM port not provided, look for connected serial port
+if ([string]::IsNullOrEmpty($ComPort)) {
+    $ports = Get-CimInstance Win32_SerialPort | Where-Object { $_.PNPDeviceID -match '1D50' -or $_.Name -match 'COM' }
+    if ($ports) {
+        $ComPort = $ports[0].DeviceID
+    }
+}
+
+if (![string]::IsNullOrEmpty($ComPort)) {
+    Write-Host "Sending 'bootloader' command to $ComPort..."
+    try {
+        $p = New-Object System.IO.Ports.SerialPort $ComPort, 115200
+        $p.DtrEnable = $true
+        $p.RtsEnable = $true
+        $p.Open()
+        $p.WriteLine("bootloader")
+        Start-Sleep -Milliseconds 300
+        $p.Close()
+        Write-Host "Bootloader command sent to $ComPort."
+    } catch {
+        Write-Host "COM error: $($_.Exception.Message)"
+    }
+} else {
+    Write-Host "No active COM port detected. Please double-tap the reset button on XIAO BLE manually if needed."
+}
+
+Write-Host "Waiting for UF2 bootloader drive..."
+
 $timeout = [DateTime]::Now.AddSeconds(60)
 while ([DateTime]::Now -lt $timeout) {
     $drive = Get-PSDrive -PSProvider FileSystem | Where-Object { Test-Path "$($_.Root)INFO_UF2.TXT" }
